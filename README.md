@@ -3,7 +3,7 @@
 🚀 Welcome to Journaled!
 
 ## Journaled has an official hosted option!
-Visit [https://journaled.wireway.ch](https://journaled.wireway.ch){:target="_blank"} to crate a free account with encryption.
+Visit [https://journaled.wireway.ch](https://journaled.wireway.ch) to crate a free account with encryption.
 Do not use other public instances since no one can verify if an instance has encryption or has been modified.
 
 ## Introduction

@@ -236,6 +236,10 @@ app.get('/manifest.json', (req, res) => {
   res.sendFile(__dirname + '/manifest.json');
 });
 
+app.get('/favicon.ico', (req, res) => {
+  res.sendFile(__dirname + '/assets/icons/favicon.ico');
+});
+
 app.use('/humanModel', express.static('humanModel'));
 app.use('/assets', express.static('assets'));
 

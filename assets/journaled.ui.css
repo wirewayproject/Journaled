@@ -1,0 +1,118 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #1a1a1a;
+    color: white;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.login-container {
+    text-align: center;
+    background-color: #1e1e1e;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    height: 80%;
+    color: white;
+    /* Text color */
+}
+
+input[type="text"],
+input[type="password"] {
+    margin: 15px 0;
+    padding: 15px;
+    width: 250px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    background-color: #333;
+    color: white;
+}
+
+input[type="submit"] {
+    padding: 15px 30px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+.loginlink {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.noNameInput {
+    font-weight: bold;
+}
+
+.frStatus {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    margin-top: 0;
+    background-color: rgba(128, 128, 128, 0.644);
+    border-radius: 16px;
+    margin: 0;
+    z-index: 1001;
+}
+
+.frStatusText {
+    margin: 8px;
+}
+
+#journalContent {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    border: 0px solid white;
+    height: 80%;
+}
+
+#leftDiv {
+    width: 60%;
+    box-sizing: border-box;
+    height: 100%;
+    border: 0px solid white;
+    padding: 10px;
+}
+
+#rightDiv {
+    width: 40%;
+    box-sizing: border-box;
+    height: 100%;
+    border: 0px solid white;
+    padding: 10px;
+}
+
+.journalContentText {
+    text-align: left;
+    margin-top: 50px;
+}
+
+.journalContentTextContainer {
+    margin-top: 50px;
+    justify-content: center;
+    display: flex;
+}
+
+.loadingText {
+    display: none;
+}
+
+.loadingTextContainer {
+    justify-content: center;
+    text-align: center;
+}

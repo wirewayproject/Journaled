@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Journaled | Nextgen Diary</title>
+    <script src="/assets/journaled.js"></script>
+    <link rel="stylesheet" href="assets/journaled.index.css">
+    <script src="login.js"></script>
+</head>
+
+<body>
+    <div class="login-container">
+        <h1 id="formTitle">Login</h1>
+        <p id="switchFormText"><a class='loginlink' href="#" onclick="switchForm()">Register</a></p>
+        <form id="loginForm" onsubmit="handleSubmit(event)">
+            <input type="text" id="name" placeholder="Name" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <div id="registerFields" style="display: none;">
+                <p>Scan the QR code below to obtain a 2FA token</p>
+                <p id="noNameInput" class="noNameInput">No data above entered. First enter your name and password.</p>
+                <img id="qrCode" src="" alt="2FA QR Code" style="display: none; ">
+                <div id="manualInstallationText" style="display: none; ">
+                    <p>Alternatively you can enter this into your authenticator: </p>
+                    <p style="font-weight: bold; line-break: anywhere;"
+                        onclick="copyToClipboard(document.getElementById('authToken').innerText)" id="authToken"></p>
+                </div>
+                <script>
+                    let secret;
+                    document.addEventListener('DOMContentLoaded', (event) => {
+                        const nameInput = document.querySelector('input[type="text"]');
+                        let lastEnteredName = '';
+
+                        const generateQRCode = (name) => {
+                            fetch(`/generate-totp/${name}`)
+                                .then(response => response.json())
+                                .then(data => {
+                                    document.getElementById('qrCode').src = data.qrCode;
+                                    secret = data.secret;
+                                    document.getElementById("authToken").innerText = data.secret;
+                                })
+                                .catch(error => console.error('Error fetching QR code:', error));
+                        };
+
+                        nameInput.addEventListener('keyup', (event) => {
+                            const name = event.target.value;
+                            if (name) {
+                                document.getElementById('qrCode').style.display = "";
+                                document.getElementById('noNameInput').style.display = "none";
+                                document.getElementById('manualInstallationText').style.display = "";
+                                generateQRCode(name);
+                                lastEnteredName = name;
+                            } else {
+                                document.getElementById('qrCode').style.display = "none";
+                                document.getElementById('noNameInput').style.display = "";
+                                document.getElementById('manualInstallationText').style.display = "none";
+                            }
+                        });
+
+                        if (nameInput.value) {
+                            generateQRCode(nameInput.value);
+                            lastEnteredName = nameInput.value;
+                        }
+                    });
+                </script>
+            </div>
+            <input type="text" id="token" placeholder="2FA" required>
+            <input type="submit" value="Login">
+        </form>
+
+    </div>
+    <script>
+        setInterval(() => {
+            const sessionId = getCookie('token');
+            if (sessionId) {
+                fetch('/verify-session', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ sessionId }),
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            console.log("logged in!")
+                            window.location.href = '/ui';
+                        } else {
+                            console.error('Token verification failed');
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
+        }, 1000);
+
+    </script>
+</body>
+
+</html>

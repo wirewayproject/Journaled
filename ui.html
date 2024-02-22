@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/assets/journaled.js"></script>
+    <script src="/assets/tf.js"></script>
+    <script src="/assets/teachablemachine-image.min.js"></script>
+    <link rel="stylesheet" href="/assets/journaled.ui.css">
+    <title>Journaled | Nextgen Diary</title>
+    <script src="login.js"></script>
+</head>
+
+<body>
+    <div class="frStatus">
+        <p class="frStatusText" id="frStatText">🔄 Initializing User detection... Please Wait</p>
+    </div>
+    <div class="loadingTextContainer">
+        <h1 id="loadingText" class="loadingText">Journaled is loading... <br><br>Allow camera access if asked</h1>
+    </div>
+    <div id="pagecontent" class="login-container">
+        <h1 id="formTitle">Welcome to Journaled</h1>
+        <a class="loginlink" onclick="logoutAndDestroy()">Press Escape or click here to log out and destroy all local
+            data.</a>
+        <div id="journalContent">
+            <div id="leftDiv">
+                <h2>Journal</h2>
+                <a>Download Journal (soon)</a>
+                <div class="journalContentTextContainer" id="journalContentTextContainer">
+                    <div class="journalContentText" id="journalContentText">
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div id="rightDiv">
+                <h2>New Entry</h2>
+                <p>Journal entries are permanent</p>
+                <form id="entryForm" onsubmit="event.preventDefault(); submitEntry();">
+                    <input type="text" id="entryContent" name="content" placeholder="Entry" required><br>
+                    <input type="submit" value="Submit">
+                </form>
+                <script>
+                </script>
+            </div>
+        </div>
+
+    </div>
+    <script>
+
+        document.addEventListener('DOMContentLoaded', fetchEntries);
+
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape') {
+                logoutAndDestroy()
+            }
+        });
+
+
+        function logoutAndDestroy() {
+            document.cookie.split(";").forEach(function (c) {
+                document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+            });
+        }
+    </script>
+    <script>
+        const URL = "./humanModel/";
+        let model, webcam, maxPredictions;
+
+        async function init() {
+            console.log("start loading")
+            document.getElementById("pagecontent").style = "display: none"
+            document.getElementById("loadingText").style = "display: block"
+            const modelURL = URL + "model.json";
+            const metadataURL = URL + "metadata.json";
+
+            model = await tmImage.load(modelURL, metadataURL);
+            maxPredictions = model.getTotalClasses();
+
+            const flip = true;
+            webcam = new tmImage.Webcam(200, 200, flip);
+            await webcam.setup();
+            await webcam.play();
+
+
+
+            webcam.update();
+            const prediction = await model.predict(webcam.canvas);
+
+
+            window.requestAnimationFrame(loop);
+
+            console.log("done loading")
+            document.getElementById("pagecontent").style = "display: block"
+            document.getElementById("loadingText").style = "display: none"
+        }
+
+        async function loop() {
+            webcam.update();
+            await predict();
+            window.requestAnimationFrame(loop);
+        }
+
+        let noUserDetectedStartTime = null;
+        async function predict() {
+            const prediction = await model.predict(webcam.canvas);
+            if (prediction[0].probability.toFixed(2) < 0.8) {
+                if (!noUserDetectedStartTime) {
+                    noUserDetectedStartTime = new Date();
+                } else if (new Date() - noUserDetectedStartTime > 1) {
+                    const msSinceInactive = new Date() - noUserDetectedStartTime;
+
+
+                    document.getElementById("frStatText").innerText = "❌ No user detected since " + msSinceInactive / 1000 + " seconds"
+                    if (new Date() - noUserDetectedStartTime > 4000) {
+                        blockInputsAndShowOverlay(true, msSinceInactive);
+                        let overlay = document.getElementById('noUserOverlay');
+                    }
+                    if (new Date() - noUserDetectedStartTime > 30000) {
+                        console.log('log out and destroy data');
+                        logoutAndDestroy()
+                    }
+                }
+            } else {
+                if (noUserDetectedStartTime) {
+                    blockInputsAndShowOverlay(false, 0);
+                }
+                noUserDetectedStartTime = null;
+                document.getElementById("frStatText").innerText = "✅ User active";
+            }
+        }
+
+        setInterval(() => {
+            const sessionId = getCookie('token');
+            fetch('/verify-session', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ sessionId }),
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        console.log("logged out!")
+                        window.location.href = '/';
+
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }, 1000);
+
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+
+        init();
+    </script>
+</body>
+
+</html>

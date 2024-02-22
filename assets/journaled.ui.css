@@ -96,6 +96,50 @@ input[type="submit"]:hover {
     border: 0px solid white;
     padding: 10px;
 }
+@media only screen and (max-width: 600px) {
+    body {
+        font-size: 14px;
+    }
+
+    .login-container {
+        width: 90%;
+        padding: 20px;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    input[type="number"] {
+        width: 80%;
+    }
+
+    input[type="submit"] {
+        width: 100%;
+    }
+    #journalContent {
+        display: flex;
+        flex-direction: column; /* Change flex direction to column for mobile */
+        padding: 20px;
+        border: 0px solid white;
+        height: 80%;
+    }
+    
+    #leftDiv {
+        width: 100%; /* Set width to 100% for full width on mobile */
+        box-sizing: border-box;
+        height: 100%;
+        border: 0px solid white;
+        padding: 10px;
+    }
+    
+    #rightDiv {
+        width: 100%; /* Set width to 100% for full width on mobile */
+        box-sizing: border-box;
+        height: 100%;
+        border: 0px solid white;
+        padding: 10px;
+    }
+}
+
 
 .journalContentText {
     text-align: left;

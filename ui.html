@@ -13,7 +13,7 @@
 </head>
 
 <body>
-    <div class="frStatus">
+    <div class="frStatus" id="frStatus">
         <p class="frStatusText" id="frStatText">🔄 Initializing User detection... Please Wait</p>
     </div>
     <div class="loadingTextContainer">
@@ -157,7 +157,23 @@
             if (parts.length === 2) return parts.pop().split(';').shift();
         }
 
-        init();
+        if (/android|bb\d+|meego|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge|maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i.test(navigator.userAgent) || /pwa/i.test(navigator.userAgent)) {
+            console.log("start loading")
+            document.getElementById("pagecontent").style = "display: none";
+            document.getElementById("loadingText").style = "display: block";
+            document.getElementById("loadingText").innerHTML = "Journaled is loading... <br><br>User detection won't work on mobile.";
+            document.getElementById("frStatus").style = "display: none";
+
+
+
+            setTimeout(() => {
+                console.log("done loading")
+                document.getElementById("pagecontent").style = "display: block";
+                document.getElementById("loadingText").style = "display: none";
+            }, 4000);
+        } else {
+            init();
+        }
     </script>
 </body>
 

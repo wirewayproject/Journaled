@@ -2,6 +2,10 @@
 
 🚀 Welcome to Journaled!
 
+## Journaled has an official hosted option!
+Visit https://journaled.wireway.ch to crate a free account with encryption.
+Do not use other public instances since no one can verify if an instance has encryption or has been modified.
+
 ## Introduction
 This project is a secure authentication and journaling system using TOTP (Time-based One-Time Password) for user verification and encryption for data security.
 When logged in, an AI continuously checks if a user is present. If none were detected for 30 seconds, journaled automatically logs the user out.

@@ -12,7 +12,6 @@ const port = 3017;
 app.use(cors())
 app.use(bodyParser.json());
 
-// Generate TOTP QR Code
 app.get('/generate-totp/:name', async (req, res) => {
   const { name } = req.params;
   const secret = speakeasy.generateSecret({ length: 20, name: "Journaled: " + name });
@@ -26,7 +25,6 @@ app.get('/generate-totp/:name', async (req, res) => {
 
 const bcrypt = require('bcrypt');
 
-// Register route
 app.post('/register', async (req, res) => {
   const { name, password, token, secret } = req.body;
   const verified = speakeasy.totp.verify({

@@ -9,6 +9,14 @@ function copyToClipboard(text) {
     showToast('Copied to clipboard', 'success');
 }
 
+
+  if (typeof navigator.serviceWorker !== 'undefined') {
+    navigator.serviceWorker.register('/assets/sw.js')
+  }
+
+
+
+
 async function handleSubmit(event) {
     event.preventDefault();
     const formTitle = document.getElementById('formTitle').innerText;
@@ -36,7 +44,7 @@ async function handleSubmit(event) {
         const data = await response;
         if (response.ok) {
             data.json().then(jsonData => {
-                document.cookie = `token=${jsonData.session.sessionId}; path=/`;
+                document.cookie = `token=${jsonData.session.sessionId}; path=/; max-age=86400`; // Set cookie to expire in 1 hour (3600 seconds)
             });
             showToast('Success!', 'success');
         } else {

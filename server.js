@@ -228,6 +228,14 @@ app.get('/ui', (req, res) => {
   res.sendFile(__dirname + '/ui.html');
 });
 
+app.get('/offline', (req, res) => {
+  res.sendFile(__dirname + '/offline.html');
+});
+
+app.get('/manifest.json', (req, res) => {
+  res.sendFile(__dirname + '/manifest.json');
+});
+
 app.use('/humanModel', express.static('humanModel'));
 app.use('/assets', express.static('assets'));
 

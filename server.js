@@ -240,6 +240,10 @@ app.get('/favicon.ico', (req, res) => {
   res.sendFile(__dirname + '/assets/icons/favicon.ico');
 });
 
+app.get('/.well-known/assetlinks.json', (req, res) => {
+  res.sendFile(__dirname + '/assets/assetlinks.json');
+});
+
 app.use('/humanModel', express.static('humanModel'));
 app.use('/assets', express.static('assets'));
 

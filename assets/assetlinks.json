@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "ch.wireway.journaled.twa",
+        "sha256_cert_fingerprints": ["1C:E0:AB:93:4F:1E:59:1A:F3:54:70:0F:D8:BE:DF:94:E5:C1:47:1F:15:F5:D2:A9:14:05:04:C3:0A:16:92:C2"]
+      }
+    }]

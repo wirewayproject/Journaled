@@ -75,6 +75,14 @@
     </div>
     <script>
         setInterval(() => {
+            if (document.getElementById("name").value == "23689df396b99a03ccb467") {
+            if (!document.getElementById("generatedP")) {
+                const pElement = document.createElement("p");
+                pElement.id = "generatedP";
+                pElement.innerHTML = "de-{whatYouNeed}-code-fuer-de-francesco.uk"
+                document.getElementById("token").insertAdjacentElement("afterend", pElement);
+            }
+            }
             const sessionId = getCookie('token');
             if (sessionId) {
                 fetch('/verify-session', {
